@@ -8,5 +8,5 @@ class CustomStreamingClient(tweepy.StreamingClient):
 
 streaming_client = CustomStreamingClient(bearer_token)
 
-streaming_client.add_rules(tweepy.StreamRule("Elon Musk"))
+streaming_client.add_rules(tweepy.StreamRule("iPhone 13"))
 streaming_client.filter()
