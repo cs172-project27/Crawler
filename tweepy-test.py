@@ -2,6 +2,7 @@ import tweepy
 import urllib
 import re
 
+tweets = []
 bearer_token = "AAAAAAAAAAAAAAAAAAAAAGwqcAEAAAAAew5fSszXMJz4npuFgAeE7RVpUCo%3D8EB29IRC2vMKQxNOlL5hhJmlziqxMcl5hNPMPaCCGFIe7dZGRz"
 
 class Tweet:
@@ -16,7 +17,7 @@ class CustomStreamingClient(tweepy.StreamingClient):
     def on_tweet(self, tweet):
         urls = re.findall("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", tweet.text)
         crawledTweet = Tweet(tweet.text, tweet.created_at, tweet.geo, tweet.author_id, urls)
-        print(crawledTweet.urls)
+        tweets.append(crawled_tweet)
 
 streaming_client = CustomStreamingClient(bearer_token)
 
