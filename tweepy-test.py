@@ -2,8 +2,15 @@ import tweepy
 import urllib
 import re
 
+consumer_key = "BSnHHnsiKTiFdx7my3AOShGD6"
+consumer_secret = "COm3WakQurOycapsZucd8VEGCoZ7bwlmGViWQMvrlSID0N2y6m"
+
+access_token = "1490394151791198209-SECeYJWboasBDTvWbbDugPDiYLR0UW"
+access_token_secret = "9EHjVUhlTCHA8bbhUY1VFu6ELKRopPfD9sQCzX3vEiVL5"
+
+bearer_token = "AAAAAAAAAAAAAAAAAAAAAH5RcAEAAAAAV2jjHODhkoMhp9VuSBCoC1JdGeM%3DDFexcLWvkLLta81ZGny2f1tQpTyTOm10MDJtBt6dYD7Eontg2p"
+
 tweets = []
-bearer_token = "AAAAAAAAAAAAAAAAAAAAAGwqcAEAAAAAew5fSszXMJz4npuFgAeE7RVpUCo%3D8EB29IRC2vMKQxNOlL5hhJmlziqxMcl5hNPMPaCCGFIe7dZGRz"
 
 class Tweet:
     def __init__(self, text, timestamp, geo, user, urls):
@@ -17,16 +24,22 @@ class CustomStreamingClient(tweepy.StreamingClient):
     def on_tweet(self, tweet):
         urls = re.findall("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", tweet.text)
         crawledTweet = Tweet(tweet.text, tweet.created_at, tweet.geo, tweet.author_id, urls)
-        tweets.append(crawled_tweet)
+        tweet.append(crawledTweet)
 
-streaming_client = CustomStreamingClient(bearer_token)
+# streaming_client = CustomStreamingClient(bearer_token)
 
-filterRules = streaming_client.get_rules()[0]
-if filterRules is not None:
-    rules_to_delete = []
-    for rule in filterRules:
-        rules_to_delete.append(rule.id)
-    streaming_client.delete_rules(rules_to_delete)
+# filterRules = streaming_client.get_rules()[0]
+# if filterRules is not None:
+#     rules_to_delete = []
+#     for rule in filterRules:
+#         rules_to_delete.append(rule.id)
+#     streaming_client.delete_rules(rules_to_delete)
 
-streaming_client.add_rules(tweepy.StreamRule("Elon Musk"))
-streaming_client.filter()
+# streaming_client.add_rules(tweepy.StreamRule("Elon Musk"))
+# streaming_client.filter()
+
+client = tweepy.Client(bearer_token)
+query = 'place_country:US'
+tweets = client.search_recent_tweets(query)
+for tweet in tweets.data:
+    print(tweet.data)
