@@ -24,7 +24,8 @@ class CustomStreamingClient(tweepy.StreamingClient):
     def on_tweet(self, tweet):
         urls = re.findall("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", tweet.text)
         crawledTweet = Tweet(tweet.text, tweet.created_at, tweet.geo, tweet.author_id, urls)
-        tweet.append(crawledTweet)
+        tweets.append(crawledTweet)
+        print(tweet.data)
 
 streaming_client = CustomStreamingClient(bearer_token)
 
