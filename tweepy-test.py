@@ -26,20 +26,14 @@ class CustomStreamingClient(tweepy.StreamingClient):
         crawledTweet = Tweet(tweet.text, tweet.created_at, tweet.geo, tweet.author_id, urls)
         tweet.append(crawledTweet)
 
-# streaming_client = CustomStreamingClient(bearer_token)
+streaming_client = CustomStreamingClient(bearer_token)
 
-# filterRules = streaming_client.get_rules()[0]
-# if filterRules is not None:
-#     rules_to_delete = []
-#     for rule in filterRules:
-#         rules_to_delete.append(rule.id)
-#     streaming_client.delete_rules(rules_to_delete)
+filterRules = streaming_client.get_rules()[0]
+if filterRules is not None:
+    rules_to_delete = []
+    for rule in filterRules:
+        rules_to_delete.append(rule.id)
+    streaming_client.delete_rules(rules_to_delete)
 
-# streaming_client.add_rules(tweepy.StreamRule("Elon Musk"))
-# streaming_client.filter()
-
-client = tweepy.Client(bearer_token)
-query = 'place_country:US'
-tweets = client.search_recent_tweets(query)
-for tweet in tweets.data:
-    print(tweet.data)
+streaming_client.add_rules(tweepy.StreamRule("Elon Musk"))
+streaming_client.filter()
