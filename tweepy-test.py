@@ -2,11 +2,11 @@ import tweepy
 import urllib
 import re
 
-consumer_key = "BSnHHnsiKTiFdx7my3AOShGD6"
-consumer_secret = "COm3WakQurOycapsZucd8VEGCoZ7bwlmGViWQMvrlSID0N2y6m"
+consumer_key = "pZ4SmVkzaw2Htna6gFHvCndDL"
+consumer_secret = "kl3klUE5bY2R95A1bskmr6vYpL9pmRLpDBXzNtpE1dpXfVkbTO"
 
-access_token = "1490394151791198209-SECeYJWboasBDTvWbbDugPDiYLR0UW"
-access_token_secret = "9EHjVUhlTCHA8bbhUY1VFu6ELKRopPfD9sQCzX3vEiVL5"
+access_token = "1490394151791198209-UtEgfitS5KNQVFo1p2i8zapqty8weZ"
+access_token_secret = "qQFdgLkyNH9L4j5wKmV56NxnID0vJgFT8yQnjHFJ2wwS0"
 
 bearer_token = "AAAAAAAAAAAAAAAAAAAAAH5RcAEAAAAAV2jjHODhkoMhp9VuSBCoC1JdGeM%3DDFexcLWvkLLta81ZGny2f1tQpTyTOm10MDJtBt6dYD7Eontg2p"
 
@@ -29,12 +29,4 @@ class CustomStreamingClient(tweepy.StreamingClient):
 
 streaming_client = CustomStreamingClient(bearer_token)
 
-filterRules = streaming_client.get_rules()[0]
-if filterRules is not None:
-    rules_to_delete = []
-    for rule in filterRules:
-        rules_to_delete.append(rule.id)
-    streaming_client.delete_rules(rules_to_delete)
-
-streaming_client.add_rules(tweepy.StreamRule("Elon Musk"))
-streaming_client.filter()
+streaming_client.sample()
