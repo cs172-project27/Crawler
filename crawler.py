@@ -4,10 +4,12 @@ import json
 import re
 from bs4 import BeautifulSoup
 import validators
+import sys
 
+file_name = 'tweets.json'
 bearer_token = "AAAAAAAAAAAAAAAAAAAAAGImcQEAAAAAeVzfbOozV0ogH895rjehH3FT400%3DWI0VPPnC55EQ6fZRKiJOtpx8aIeZ5YbAkin85CNPfGeICWdkKi"
-
-outfile = open('tweets.json', 'w')
+outfile = open(file_name, 'w')
+max_index = 2000000
 
 def create_url():
     return "https://api.twitter.com/2/tweets/sample/stream?tweet.fields=created_at&expansions=author_id"
@@ -22,7 +24,7 @@ def bearer_oauth(r):
 def connect_to_endpoint(url):
     response = requests.request("GET", url, auth=bearer_oauth, stream=True)
     print(response.status_code)
-    jsonIndex = 1
+    json_index = 1
     for response_line in response.iter_lines():
         if response_line:
             tweetData = json.loads(response_line)
@@ -44,13 +46,15 @@ def connect_to_endpoint(url):
                     except:
                         print("Unable to fetch page title")
 
-            jsonString = json.dumps(tweetData, indent=4, sort_keys=True, ensure_ascii=False)
-            jsonIndexString = str(jsonIndex)
-            outfile.write('\"%s\": '%jsonIndexString)
-            jsonIndex = jsonIndex + 1
+            json_string = json.dumps(tweetData, indent=4, sort_keys=True, ensure_ascii=False)
+            json_index_string = str(json_index)
+            outfile.write('\"%s\": '%json_index_string)
 
-            outfile.write(jsonString)
+            json_index = json_index + 1
+            if json_index >= max_index:
+                break
 
+            outfile.write(json_string)
             outfile.write(',')
     if response.status_code != 200:
         raise Exception(
@@ -69,4 +73,12 @@ def main():
 
 
 if __name__ == "__main__":
+    custom_name = str(sys.argv[1])   
+    if (custom_name.endswith('.json')):
+        file_name = custom_name
+
+    custom_length = sys.argv[2]
+    if custom_length.isdigit():
+        max_index = custom_length
+
     main()
