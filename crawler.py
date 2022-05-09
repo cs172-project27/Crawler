@@ -34,7 +34,7 @@ def connect_to_endpoint(url):
             for url in urls:
                 if validators.url(url):
                     try:
-                        reqs = requests.get(url)
+                        reqs = requests.get(url, timeout=10)
                         soup = BeautifulSoup(reqs.text, 'html.parser')
                         titles = []
                         for title in soup.find_all('title'):
