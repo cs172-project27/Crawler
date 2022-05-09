@@ -2,6 +2,8 @@ import requests
 import os
 import json
 import re
+from bs4 import BeautifulSoup
+import validators
 
 bearer_token = "AAAAAAAAAAAAAAAAAAAAAGImcQEAAAAAeVzfbOozV0ogH895rjehH3FT400%3DWI0VPPnC55EQ6fZRKiJOtpx8aIeZ5YbAkin85CNPfGeICWdkKi"
 
@@ -28,6 +30,19 @@ def connect_to_endpoint(url):
             text = tweetData['data']['text']
             urls = re.findall("http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+", text)
             tweetData['urls'] = urls
+
+            for url in urls:
+                if validators.url(url):
+                    try:
+                        reqs = requests.get(url)
+                        soup = BeautifulSoup(reqs.text, 'html.parser')
+                        titles = []
+                        for title in soup.find_all('title'):
+                            titles.append(title.get_text())
+                            break
+                        tweetData['titles'] = titles
+                    except:
+                        print("Unable to fetch page title")
 
             jsonString = json.dumps(tweetData, indent=4, sort_keys=True, ensure_ascii=False)
             jsonIndexString = str(jsonIndex)
