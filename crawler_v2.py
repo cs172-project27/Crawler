@@ -71,7 +71,7 @@ def set_rules(delete):
 
 def get_stream(set):
     response = requests.get(
-        "https://api.twitter.com/2/tweets/search/stream", auth=bearer_oauth, stream=True,
+        "https://api.twitter.com/2/tweets/search/stream?tweet.fields=created_at&expansions=author_id", auth=bearer_oauth, stream=True,
     )
     print(response.status_code)
     if response.status_code != 200:
